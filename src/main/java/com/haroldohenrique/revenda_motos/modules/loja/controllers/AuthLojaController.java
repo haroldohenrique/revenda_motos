@@ -1,0 +1,33 @@
+package com.haroldohenrique.revenda_motos.modules.loja.controllers;
+
+import javax.naming.AuthenticationException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.haroldohenrique.revenda_motos.modules.loja.dto.AuthLojaRequestDTO;
+import com.haroldohenrique.revenda_motos.modules.loja.services.AuthLojaUseCase;
+
+@RequestMapping("/loja")
+@RestController
+public class AuthLojaController {
+    @Autowired
+    private AuthLojaUseCase authLojaUseCase;
+
+    @PostMapping("/auth")
+    public ResponseEntity<Object> create(@RequestBody AuthLojaRequestDTO authLojaDTO) {
+        try {
+            var token = this.authLojaUseCase.execute(authLojaDTO);
+            return ResponseEntity.ok().body(token);
+
+        } catch (AuthenticationException ex) {
+            ex.getMessage();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+        }
+    }
+}
