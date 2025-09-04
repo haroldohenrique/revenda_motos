@@ -33,6 +33,8 @@ public class MotoEntity {
 
     private Integer ano;
 
+    private String description;
+
     @ManyToOne()
     @JoinColumn(name = "loja_id", insertable = false, updatable = false)
     private LojaEntity lojaEntity;

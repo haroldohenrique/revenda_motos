@@ -30,11 +30,11 @@ public class AuthLojaUseCase {
     private PasswordEncoder passwordEncoder;
 
     public AuthLojaResponseDTO execute(AuthLojaRequestDTO authLojaDTO) throws AuthenticationException {
-        var loja = this.lojaRepository.findByEmail(authLojaDTO.email())
+        var loja = this.lojaRepository.findByEmail(authLojaDTO.getEmail())
                 .orElseThrow(() -> {
                     throw new UsernameNotFoundException("email/password incorrect");
                 });
-        var passwordIguais = this.passwordEncoder.matches(authLojaDTO.password(), loja.getPassword());
+        var passwordIguais = this.passwordEncoder.matches(authLojaDTO.getPassword(), loja.getPassword());
 
         // se a senha não for igual ->
         if (!passwordIguais) {

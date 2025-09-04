@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.haroldohenrique.revenda_motos.modules.loja.models.MotoEntity;
 
 public interface MotoRepository extends JpaRepository<MotoEntity, UUID> {
-    List<MotoEntity> findByNameContainingIgnoreCase(String tipo);
+    List<MotoEntity> findByDescriptionContainingIgnoreCase(String description);
 }

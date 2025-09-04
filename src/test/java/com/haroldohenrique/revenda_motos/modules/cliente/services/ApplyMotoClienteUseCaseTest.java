@@ -65,7 +65,7 @@ public class ApplyMotoClienteUseCaseTest {
     @Test
     @DisplayName("Should be able to create a new apply moto")
     public void should_be_able_to_create_a_new_apply_moto() {
-        //TODO tentar entender esse código de merda
+
         var clienteId = UUID.randomUUID();
         var motoId = UUID.randomUUID();
         var applyMoto = ApplyMotoEntity.builder().clienteId(clienteId).motoId(motoId).build();
@@ -80,6 +80,5 @@ public class ApplyMotoClienteUseCaseTest {
         var result = applyMotoClienteUseCase.execute(clienteId, motoId);
         assertThat(result).hasFieldOrProperty("id");
         assertNotNull(result.getId());
-        //TODO devo arrumar o textnotes do testes java
     }
 }

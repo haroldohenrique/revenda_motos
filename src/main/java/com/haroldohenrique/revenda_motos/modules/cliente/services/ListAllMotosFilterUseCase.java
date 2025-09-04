@@ -15,6 +15,6 @@ public class ListAllMotosFilterUseCase{
     private MotoRepository motoRepository;
 
     public List<MotoEntity> execute(String filter){
-        return this.motoRepository.findByNameContainingIgnoreCase(filter);
+        return this.motoRepository.findByDescriptionContainingIgnoreCase(filter);
     }
 }

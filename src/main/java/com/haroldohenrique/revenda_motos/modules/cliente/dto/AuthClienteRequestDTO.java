@@ -1,5 +1,14 @@
 package com.haroldohenrique.revenda_motos.modules.cliente.dto;
 
-public record AuthClienteRequestDTO(String email, String password) {
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import lombok.Data;
 
+@Data
+public class AuthClienteRequestDTO {
+    @Schema(example = "usuario@gmail.com", requiredMode = RequiredMode.REQUIRED)
+    private String email;
+
+    @Schema(example = "usuario@gmail.com", requiredMode = RequiredMode.REQUIRED)
+    private String password;
 }

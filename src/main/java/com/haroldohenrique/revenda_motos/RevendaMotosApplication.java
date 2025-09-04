@@ -9,7 +9,6 @@ public class RevendaMotosApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RevendaMotosApplication.class, args);
 	}
-	//TODO terminar a documentação do auth controller LOJA e auth controller CLIENTE
 	//TODO aprender sobre o grafana
 
 }

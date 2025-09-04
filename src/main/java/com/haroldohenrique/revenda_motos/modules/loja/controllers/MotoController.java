@@ -19,12 +19,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RequestMapping("/loja/moto")
 @RestController
+@Tag(name = "Motos", description = "Informações das motos")
 public class MotoController {
 
         @Autowired
@@ -32,13 +34,13 @@ public class MotoController {
 
         @PostMapping("/")
         @PreAuthorize("hasRole('LOJA')")
-        @Tag(name = "Motos", description = "Informações das motos")
         @Operation(summary = "Cadastro de motos", description = "Essa função faz o cadastro de motos no banco de dados")
         @ApiResponses({
                         @ApiResponse(responseCode = "200", content = {
                                         @Content(schema = @Schema(implementation = MotoEntity.class))
                         })
         })
+        @SecurityRequirement(name = "jwt_auth")
         public ResponseEntity<Object> create(@Valid @RequestBody CreateMotoDTO createMotoDTO, HttpServletRequest request) {
                 // aqui eu to pegando o subject(loja_id) lá que ta vindo do token e passando ele
                 // pra entidade
@@ -49,12 +51,11 @@ public class MotoController {
                                         .name(createMotoDTO.getName())
                                         .ano(createMotoDTO.getAno())
                                         .tipo(createMotoDTO.getTipo())
+                                        .description(createMotoDTO.getDescription())
                                         .lojaId(UUID.fromString(lojaId.toString()))
                                         .build();
 
                         var result = this.createMotoUseCase.execute(motoEntity);
-                        // TODO adicionar description de motos na entidade para poder buscar palavras de
-                        // forma genérica
                         return ResponseEntity.ok().body(result);
 
                 } catch (Exception ex) {

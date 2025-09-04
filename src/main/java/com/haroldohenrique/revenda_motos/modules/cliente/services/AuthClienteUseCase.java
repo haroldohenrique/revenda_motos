@@ -31,12 +31,12 @@ public class AuthClienteUseCase {
     private PasswordEncoder passwordEncoder;
 
     public AuthClienteResponseDTO execute(AuthClienteRequestDTO authClienteDTO) throws AuthenticationException {
-        var cliente = this.clienteRepository.findByEmail(authClienteDTO.email())
+        var cliente = this.clienteRepository.findByEmail(authClienteDTO.getEmail())
                 .orElseThrow(() -> {
                     throw new UsernameNotFoundException("email/password incorrect");
                 });
 
-        var passwordMatches = passwordEncoder.matches(authClienteDTO.password(), cliente.getPassword());
+        var passwordMatches = passwordEncoder.matches(authClienteDTO.getPassword(), cliente.getPassword());
         if (!passwordMatches) {
             throw new AuthenticationException();
         }

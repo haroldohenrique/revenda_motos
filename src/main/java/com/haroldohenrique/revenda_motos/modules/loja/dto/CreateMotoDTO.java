@@ -22,4 +22,7 @@ public class CreateMotoDTO {
 
     @Schema(example = "carenada", requiredMode = RequiredMode.REQUIRED)
     private TipoMoto tipo;
+
+    @Schema(example = "Suzuki GSX R-1000. Moto com 998cc, carenada e bem conservada; Com apenas 12mil km.", requiredMode = RequiredMode.REQUIRED)
+    private String description;
 }

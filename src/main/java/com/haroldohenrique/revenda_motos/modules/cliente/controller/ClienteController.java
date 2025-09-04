@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.haroldohenrique.revenda_motos.modules.cliente.dto.ClienteDTO;
-import com.haroldohenrique.revenda_motos.modules.cliente.model.ClienteEntity;
+import com.haroldohenrique.revenda_motos.modules.cliente.dto.CreateClienteDTO;
+import com.haroldohenrique.revenda_motos.modules.cliente.model.ApplyMotoEntity;
 import com.haroldohenrique.revenda_motos.modules.cliente.services.ApplyMotoClienteUseCase;
 import com.haroldohenrique.revenda_motos.modules.cliente.services.CreateClienteUseCase;
 import com.haroldohenrique.revenda_motos.modules.cliente.services.ListAllMotosFilterUseCase;
@@ -53,16 +54,16 @@ public class ClienteController {
     // private SearchClienteUseCase searchClienteUseCase;
 
     @PostMapping("/")
-    @Operation(summary = "Criar o perfil do cliente", description = "Essa função faz a criação do perfil do cliente")
+    @Operation(summary = "Criar o perfil do cliente", description = "Essa função faz a criação do perfil do cliente.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = {
-                    @Content(schema = @Schema(implementation = ClienteEntity.class))
+                    @Content(schema = @Schema(implementation = CreateClienteDTO.class))
             }),
             @ApiResponse(responseCode = "409", description = "Conflit. User already exists")
     })
-    public ResponseEntity<Object> create(@Valid @RequestBody ClienteEntity clienteEntity) {
+    public ResponseEntity<Object> create(@Valid @RequestBody CreateClienteDTO createClienteDTO) {
         try {
-            var result = createClienteUseCase.execute(clienteEntity);
+            var result = createClienteUseCase.execute(createClienteDTO);
             return ResponseEntity.ok().body(result);
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -76,7 +77,7 @@ public class ClienteController {
             @ApiResponse(responseCode = "200", content = {
                     @Content(schema = @Schema(implementation = ClienteDTO.class))
             }),
-            @ApiResponse(responseCode = "400", description = "User not found.")
+            @ApiResponse(responseCode = "404", description = "User not found.")
     })
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> get(HttpServletRequest request) {
@@ -117,7 +118,7 @@ public class ClienteController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = {
                     @Content(array = @ArraySchema(schema = @Schema(implementation = MotoEntity.class)))
-            })
+            }),@ApiResponse(responseCode = "404", description = "Moto not found.")
     })
     @SecurityRequirement(name = "jwt_auth")
     public List<MotoEntity> findMotoByFilter(@RequestParam String filter) {
@@ -126,7 +127,13 @@ public class ClienteController {
 
     @PostMapping("/moto/apply")
     @PreAuthorize("hasRole('CLIENTE')")
-    @Operation(summary = "Aplicar o cliente em uma moto", description = "Essa função aplica o cliente em uma moto")
+    @Operation(summary = "Aplicar o cliente em uma moto", description = "Essa função aplica o cliente em uma moto.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(schema = @Schema(implementation = ApplyMotoEntity.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Moto Not found")
+    })
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> applyMoto(HttpServletRequest request, @RequestBody UUID motoId) {
         var clienteId = request.getAttribute("cliente_id");
